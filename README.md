@@ -5,8 +5,11 @@
 **豆瓣 FM -- Python** 频道播放器。你需要事先安装  `requests`、`urwid` 库，以及安装 [mpg123](http://www.mpg123.de/) / [mplayer](http://mplayerhq.hu/design7/news.html) / [mpv](http://mpv.io/) 三款命令行播放器中的其中一款。
 
 **Finally，使用 `./fm.py` 命令启动程式**。*（暂不支持运行在 Windows 下）*
+## 更新
+- 频道收听
+- 红心、取消红心
 
-## 程式截图
+## 截图
 ![](art/screenshot.png)
 
 ## 按键
@@ -16,6 +19,7 @@
 - **`Enter`、`Space`：** 播放所选曲目
 - **`←`、`→`：** 播放上一曲、下一首曲目
 - **`q`、`Esc`：** 退出程式
+- **`l`、`L`：** 红心、取消红心，注意正在播放歌曲后面红心，代表红心状态
 
 ##设置
 - 在fm.cfg中填写邮箱、密码cookie

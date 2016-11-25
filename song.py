@@ -6,8 +6,8 @@ class Song(object):
         try:
             self._parse(song_json)
         except KeyError:
-            pass
-
+            self.like=1
+            
     def _parse(self, song_json):
         self.sid = song_json['sid']
         self.picture = song_json['picture']
@@ -18,7 +18,7 @@ class Song(object):
 
         self.length_in_sec = song_json['length']
         self.url = song_json['url']
-
+        self.like = song_json['like']
     @staticmethod
     def parse(song_json):
         return Song(song_json)

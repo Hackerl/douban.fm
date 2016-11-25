@@ -65,7 +65,9 @@ class DoubanFMApi:
             'version': DoubanFMApi.VERSION,
             'apikey': DoubanFMApi.KEY,
         }, headers=auth_header).json()
+        
         return rsp[random.randint(0, len(rsp) - 1)]
+        
     def get_MHz_songs(self,channel):
         if channel==-3:
             return Song(self.get_redheart_songs())
@@ -80,6 +82,23 @@ class DoubanFMApi:
         }, headers=auth_header).json()
         return Song(rsp['song'][0])
         
+    def red_song(self,channel,ssid,like):
+        param={
+            'channel': str(channel),
+            'kbps':'128',
+            'client':'s:mainsite|y:3.0',
+            'app_name':'radio_website',
+            'version':'100',
+            'sid':str(ssid),
+            'pt':'',
+            'pb':'128',
+            'apikey':''
+        }
+        param['type']=( 'u' if like else 'r')
+        auth_header = {'Cookie':self.cookie}
+        rsp = requests.get('https://douban.fm/j/v2/playlist', params=param, headers=auth_header).json()
+        return True
+
     def get_MHz_List(self):
         channel_list = [
             {'name': u'红心兆赫', 'channel': -3},

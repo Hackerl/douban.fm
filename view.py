@@ -48,6 +48,8 @@ class MHzListBox(urwid.ListBox):
         if key in ('s', 'S'):
             # 停止播放
             urwid.emit_signal(self, 'stop')
+        if key in ('l', 'L'):
+            urwid.emit_signal(self, 'like')
 
         if key == 'left':
             # 下一首歌曲

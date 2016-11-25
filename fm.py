@@ -57,9 +57,10 @@ class UI:
 
         # 注册信号回调
         urwid.register_signal(
-            MHzListBox, ['exit', 'stop','prev_song', 'next_song', 'change_mode'])
+            MHzListBox, ['exit', 'stop','like','prev_song', 'next_song', 'change_mode'])
         urwid.connect_signal(self.MHzListBox, 'exit', self._on_exit)
         urwid.connect_signal(self.MHzListBox, 'stop', self.stop_song)
+        urwid.connect_signal(self.MHzListBox, 'like', self.like_song)
         urwid.connect_signal(self.MHzListBox, 'prev_song', self.prev_song)
         urwid.connect_signal(self.MHzListBox, 'next_song', self.next_song)
         urwid.connect_signal(self.MHzListBox, 'change_mode', self.change_mode)
@@ -69,7 +70,7 @@ class UI:
 
     def _update_title(self):
         text = [
-            ('title', u' ❤ 豆瓣 FM 红心歌曲 '),
+            ('title', u' ❤ 豆瓣 FM  '),
             ('red', u'   LOOP: '),
             ('loop_mode', u'%s' % UI.LOOP_MODE[self.loop_mode]),
             ('red',u'\nStop [-]'),
@@ -77,7 +78,10 @@ class UI:
 
         if self.playing_btn is not None:
             playing_song = self.playing_song
-            text[3]=('red', u'\n♫ %s - %s' % (playing_song.title, playing_song.artist)) #正在播放歌曲
+            if playing_song.like:
+                text[3]=('red', u'\n♫ %s - %s   ❤' % (playing_song.title, playing_song.artist)) #正在播放歌曲
+            else:
+                text[3]=('red', u'\n♫ %s - %s' % (playing_song.title, playing_song.artist))
 
         self.title.set_text(text)  #为text设置内容
 
@@ -91,8 +95,14 @@ class UI:
         if self.next_song_alarm is not None:
             self.loop.remove_alarm(self.next_song_alarm)
             
+    def like_song(self):
+        if self.playing_song and self.playing_btn:
+            self.api.red_song(self.playing_btn.MHz['channel'],self.playing_song.sid,self.playing_song.like)
+            self.playing_song.like = not self.playing_song.like
+            self._update_title()
+            
     def prev_song(self):
-        if self.history.qsize() > 0:
+        if self.history.qsize():
             self.playing_song=self.history.get()
             self.player.play(self.playing_song)
             self._update_title()
@@ -102,9 +112,7 @@ class UI:
 
 
     def next_song(self):
-        if not self.playing_btn:
-            pass
-        else:
+        if self.playing_btn:
             # 随机播放
             self.history.put(self.playing_song)
             if not self.loop_mode:
