@@ -18,6 +18,6 @@
 - **`q`、`Esc`：** 退出程式
 
 ##设置
-在fm.cfg中填写邮箱、密码cookie
-cookie为登录豆瓣后取得的cookie，需要自行设置，因为cookie获取api还在开发中，请见谅!
+- 在fm.cfg中填写邮箱、密码cookie
+- cookie为登录豆瓣后取得的cookie，需要自行设置，因为cookie获取api还在开发中，请见谅!
 
